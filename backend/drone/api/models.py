@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    fullname=models.CharField(max_length=256, null=False, blank=False)
-    email_id=models.EmailField(unique=True, null=False, blank=False)
+    full_name=models.CharField(max_length=255, null=False, blank=False)
+    email_id=models.EmailField(unique=True, null=False, blank=False, primary_key=True)
     alternative_email_id=models.EmailField(unique=True, null=False, blank=False)
     age=models.PositiveIntegerField(null=False, blank=False)
     

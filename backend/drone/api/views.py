@@ -1,5 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import User
+from rest_framework import generics
+from .serializers import UsersSerializers
 
-def main(request):
-    return HttpResponse("Hello")
+
+class UsersView(generics.CreateAPIView):
+    users=User.objects.all()
+    serializer_class = UsersSerializers
+
+
+
