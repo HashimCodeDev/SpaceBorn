@@ -32,7 +32,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 via-gray-800/10 to-gray-900/10" />
+      <div className="absolute inset-0 bg-linear-to-b from-gray-900/10 via-gray-800/10 to-gray-900/10" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">

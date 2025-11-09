@@ -34,7 +34,7 @@ export default function AboutSection() {
 
   return (
     <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">

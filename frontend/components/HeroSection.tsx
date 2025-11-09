@@ -62,7 +62,7 @@ export default function HeroSection() {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 cyber-grid opacity-30" />
-      <div className="absolute inset-0 w-full h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-20 scan-line" />
+      <div className="absolute inset-0 w-full h-1 bg-linear-to-r from-transparent via-white to-transparent opacity-20 scan-line" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
         <div className="text-center lg:text-left">

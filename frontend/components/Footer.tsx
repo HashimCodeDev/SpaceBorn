@@ -21,7 +21,7 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-black">
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/20 via-transparent to-gray-900/20" />
+      <div className="absolute inset-0 bg-linear-to-r from-gray-900/20 via-transparent to-gray-900/20" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-5 gap-8 mb-12">

@@ -97,7 +97,7 @@ export default function ProductsSection() {
 
   return (
     <section id="products" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/10 via-transparent to-gray-900/10" />
+      <div className="absolute inset-0 bg-linear-to-r from-gray-900/10 via-transparent to-gray-900/10" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
