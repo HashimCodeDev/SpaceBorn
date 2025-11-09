@@ -61,8 +61,8 @@ function ProductModel({ type }: { type: string }) {
 }
 
 export default function ProductsSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref as any, { once: true, margin: "-100px" })
   const [selectedProduct, setSelectedProduct] = useState(0)
 
   const products = [
@@ -115,14 +115,14 @@ export default function ProductsSection() {
 
   return (
     <section id="products" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/10 via-transparent to-gray-900/10" />
+      <div className="absolute inset-0 bg-linear-to-r from-gray-900/10 via-transparent to-gray-900/10" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+        <div className="text-center mb-16">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
             <span className="text-white tracking-wider">
@@ -134,14 +134,15 @@ export default function ProductsSection() {
             and equipped with cutting-edge AI technology.
           </p>
         </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           {/* 3D Model Display */}
+          <div className="h-96 hologram rounded-2xl relative overflow-hidden">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="h-96 hologram rounded-2xl relative overflow-hidden"
           >
             <Canvas camera={{ position: [0, 0, 4] }}>
               <ambientLight intensity={0.6} />
@@ -151,6 +152,7 @@ export default function ProductsSection() {
               <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1} />
             </Canvas>
           </motion.div>
+          </div>
 
           {/* Product Details */}
           <motion.div
@@ -202,11 +204,11 @@ export default function ProductsSection() {
         </div>
 
         {/* Product Selection Cards */}
+        <div className="grid md:grid-cols-3 gap-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="grid md:grid-cols-3 gap-6"
         >
           {products.map((product, index) => (
             <Card
@@ -235,6 +237,7 @@ export default function ProductsSection() {
             </Card>
           ))}
         </motion.div>
+        </div>
       </div>
     </section>
   )

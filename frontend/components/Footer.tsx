@@ -28,11 +28,11 @@ export default function Footer() {
         <div className="grid lg:grid-cols-5 gap-8 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
+            <div className="mb-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-6"
             >
               <div className="flex items-center space-x-3 mb-4">
                 <Rocket className="h-8 w-8 text-white" />
@@ -46,17 +46,19 @@ export default function Footer() {
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((social) => (
-                  <motion.a
+                  <a
                     key={social.label}
                     href={social.href}
-                    whileHover={{ scale: 1.1, y: -2 }}
                     className="p-2 bg-white/5 rounded-lg border border-white/10 hover:border-white/50 transition-all duration-300 glow-border"
                   >
-                    <social.icon className="h-5 w-5 text-white/70 hover:text-white" />
-                  </motion.a>
+                    <motion.div whileHover={{ scale: 1.1, y: -2 }}>
+                      <social.icon className="h-5 w-5 text-white/70 hover:text-white" />
+                    </motion.div>
+                  </a>
                 ))}
               </div>
             </motion.div>
+            </div>
           </div>
 
           {/* Links Sections */}
@@ -85,11 +87,11 @@ export default function Footer() {
         </div>
 
         {/* Newsletter Section */}
+        <div className="hologram rounded-2xl p-8 mb-12 glow-border">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="hologram rounded-2xl p-8 mb-12 glow-border"
         >
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div>
@@ -113,13 +115,14 @@ export default function Footer() {
             </div>
           </div>
         </motion.div>
+        </div>
 
         {/* Bottom Section */}
+        <div className="border-t border-white/10 pt-8">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="border-t border-white/10 pt-8"
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-white/60 text-sm">
@@ -134,6 +137,7 @@ export default function Footer() {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
 
       {/* Decorative Elements */}

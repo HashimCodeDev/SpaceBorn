@@ -25,39 +25,41 @@ export default function Navigation() {
   ]
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-black/80 backdrop-blur-md border-b border-white/10' 
           : 'bg-transparent'
-      }`}
+      }`}>
+    <motion.div
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-2">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
           >
             <Rocket className="h-8 w-8 text-white" />
             <span className="text-2xl font-bold text-white tracking-widest text-glow">
               SPACEBORN
             </span>
           </motion.div>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <motion.a
+              <a
                 key={item.name}
                 href={item.href}
-                whileHover={{ scale: 1.1 }}
                 className="text-white/80 hover:text-white transition-colors relative group"
               >
+              <motion.div whileHover={{ scale: 1.1 }}>
                 {item.name}
+              </motion.div>
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300 shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
-              </motion.a>
+              </a>
             ))}
             <Button className="bg-white text-black hover:bg-gray-200 glow-border">
               <span className="uppercase tracking-wider">Get Started</span>
@@ -78,10 +80,10 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
+          <div className="md:hidden bg-black/90 backdrop-blur-md rounded-lg mt-2 p-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-black/90 backdrop-blur-md rounded-lg mt-2 p-4"
           >
             {navItems.map((item) => (
               <a
@@ -97,8 +99,10 @@ export default function Navigation() {
               <span className="uppercase tracking-wider">Get Started</span>
             </Button>
           </motion.div>
+          </div>
         )}
       </div>
-    </motion.nav>
+    </motion.div>
+    </nav>
   )
 }

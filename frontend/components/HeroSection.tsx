@@ -63,17 +63,17 @@ export default function HeroSection() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
+        <div className="text-center lg:text-left">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center lg:text-left"
         >
-          <motion.h1
+          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-glow">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-5xl lg:text-7xl font-bold mb-6 text-glow"
           >
             <span className="text-white tracking-wider">
               SECURITY
@@ -84,23 +84,25 @@ export default function HeroSection() {
             <span className="text-white tracking-wider">
               AUTONOMOUS
             </span>
-          </motion.h1>
+          </motion.div>
+          </h1>
 
-          <motion.p
+          <p className="text-xl text-white/80 mb-8 max-w-2xl">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-xl text-white/80 mb-8 max-w-2xl"
           >
             Advanced autonomous security drones with AI-powered intelligence, 
             protecting what matters most with precision and reliability.
-          </motion.p>
+          </motion.div>
+          </p>
 
+          <div className="flex flex-col sm:flex-row gap-4 mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 mb-12"
           >
             <Button size="lg" className="bg-white text-black hover:bg-gray-200 group relative overflow-hidden glow-border">
               <span className="relative z-10">EXPLORE DRONES</span>
@@ -110,39 +112,42 @@ export default function HeroSection() {
               WATCH DEMO
             </Button>
           </motion.div>
+          </div>
 
           {/* Feature Icons */}
+          <div className="flex justify-center lg:justify-start space-x-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex justify-center lg:justify-start space-x-8"
           >
             {[
               { icon: Zap, label: 'Autonomous' },
               { icon: Cpu, label: 'AI-Powered' },
               { icon: Satellite, label: 'Security-First' },
             ].map((feature, index) => (
+              <div key={feature.label} className="flex flex-col items-center space-y-2">
               <motion.div
-                key={feature.label}
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="flex flex-col items-center space-y-2"
               >
                 <div className="p-3 rounded-full bg-white/10 border border-white/30 glow-border">
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-sm text-white/60 uppercase tracking-wider">{feature.label}</span>
               </motion.div>
+              </div>
             ))}
           </motion.div>
+          </div>
         </motion.div>
+        </div>
 
         {/* Right 3D Model */}
+        <div className="h-96 lg:h-[500px]">
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="h-96 lg:h-[500px]"
         >
           <Canvas camera={{ position: [0, 0, 5] }}>
             <ambientLight intensity={0.5} />
@@ -152,27 +157,31 @@ export default function HeroSection() {
             <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
           </Canvas>
         </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
         >
+          <div className="w-1 h-3 bg-white/60 rounded-full mt-2">
           <motion.div
             animate={{ y: [0, 12, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="w-1 h-3 bg-white/60 rounded-full mt-2"
           />
+          </div>
         </motion.div>
+        </div>
       </motion.div>
+      </div>
     </section>
   )
 }

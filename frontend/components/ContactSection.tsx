@@ -10,8 +10,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Mail, MapPin, Phone, Send, Rocket } from 'lucide-react'
 
 export default function ContactSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref as any, { once: true, margin: "-100px" })
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -55,14 +55,14 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 via-gray-800/10 to-gray-900/10" />
+      <div className="absolute inset-0 bg-linear-to-b from-gray-900/10 via-gray-800/10 to-gray-900/10" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+        <div className="text-center mb-16">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
             <span className="text-white tracking-wider">
@@ -74,6 +74,7 @@ export default function ContactSection() {
             and let's discuss how Spaceborn can protect your assets and operations.
           </p>
         </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
@@ -163,11 +164,11 @@ export default function ContactSection() {
           </motion.div>
 
           {/* Contact Information */}
+          <div className="space-y-8">
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-8"
           >
             <div>
               <h3 className="text-2xl font-bold text-white mb-6 uppercase tracking-wide text-glow">Get In Touch</h3>
@@ -179,13 +180,12 @@ export default function ContactSection() {
 
             <div className="space-y-6">
               {contactInfo.map((info, index) => (
+                <div key={info.title} className="flex items-start space-x-4 p-4 rounded-lg hologram hover:border-white/50 transition-all duration-300 glow-border">
                 <motion.div
-                  key={info.title}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                   whileHover={{ scale: 1.02, x: 10 }}
-                  className="flex items-start space-x-4 p-4 rounded-lg hologram hover:border-white/50 transition-all duration-300 glow-border"
                 >
                   <div className="p-3 bg-white rounded-lg glow-border">
                     <info.icon className="h-6 w-6 text-black" />
@@ -196,14 +196,15 @@ export default function ContactSection() {
                     <p className="text-sm text-white/60">{info.description}</p>
                   </div>
                 </motion.div>
+                </div>
               ))}
             </div>
 
+            <div className="hologram rounded-2xl p-6 glow-border">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="hologram rounded-2xl p-6 glow-border"
             >
               <h4 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide text-glow">Security Operations Center</h4>
               <p className="text-white/80 mb-4">
@@ -215,7 +216,9 @@ export default function ContactSection() {
                 <span className="text-sm font-medium uppercase tracking-wider">Online Now</span>
               </div>
             </motion.div>
+            </div>
           </motion.div>
+          </div>
         </div>
       </div>
     </section>

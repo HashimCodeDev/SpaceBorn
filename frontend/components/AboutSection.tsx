@@ -6,8 +6,8 @@ import { useRef } from 'react'
 import { Rocket, Brain, Globe, Zap } from 'lucide-react'
 
 export default function AboutSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref as any, { once: true, margin: "-100px" })
 
   const features = [
     {
@@ -34,14 +34,14 @@ export default function AboutSection() {
 
   return (
     <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+        <div className="text-center mb-16">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
             <span className="text-white tracking-wider">
@@ -54,16 +54,16 @@ export default function AboutSection() {
             that provide unmatched surveillance and threat response capabilities.
           </p>
         </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {features.map((feature, index) => (
+            <div key={feature.title} className="group">
             <motion.div
-              key={feature.title}
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               whileHover={{ scale: 1.05, y: -10 }}
-              className="group"
             >
               <div className="hologram rounded-2xl p-6 h-full hover:border-white/50 transition-all duration-300 glow-border">
                 <div className="mb-4">
@@ -75,14 +75,15 @@ export default function AboutSection() {
                 <p className="text-white/70">{feature.description}</p>
               </div>
             </motion.div>
+            </div>
           ))}
         </div>
 
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="grid lg:grid-cols-2 gap-12 items-center"
         >
           <div>
             <h3 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide text-glow">
@@ -105,27 +106,27 @@ export default function AboutSection() {
                 { number: '99.9%', label: 'Threat Detection Rate' },
                 { number: '24/7', label: 'Security Coverage' },
               ].map((stat, index) => (
+                <div key={stat.label} className="text-center">
                 <motion.div
-                  key={stat.label}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                  className="text-center"
                 >
                   <div className="text-2xl font-bold text-white">
                     {stat.number}
                   </div>
                   <div className="text-sm text-white/60">{stat.label}</div>
                 </motion.div>
+                </div>
               ))}
             </div>
           </div>
 
+          <div className="relative">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="relative"
           >
             <div className="aspect-square hologram rounded-3xl flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 cyber-grid opacity-20" />
@@ -136,7 +137,9 @@ export default function AboutSection() {
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow glow-border" />
             <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse glow-border" />
           </motion.div>
+          </div>
         </motion.div>
+        </div>
       </div>
     </section>
   )
