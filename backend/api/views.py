@@ -9,13 +9,13 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from .permissions import *
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from .task import *
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
 
 #     users=User.objects.all()
-#     serializer_class = UsersSerializer
+#     serializer_class = UserSerializer
 
 class LoginView(APIView):
     def post(self, request):
@@ -96,7 +96,7 @@ class Admin_UsersView(APIView):
         teams = Team.objects.all()
         for team in teams:
             users = User.objects.filter(team=team)
-            serializer = UsersSerializer(users, many=True)
+            serializer = UserSerializer(users, many=True)
             
             response_data.append({
                 "team": team.name,
@@ -106,7 +106,7 @@ class Admin_UsersView(APIView):
         # Handle users who have no team (optional)
         no_team_users = User.objects.filter(team__isnull=True)
         if no_team_users.exists():
-            serializer = UsersSerializer(no_team_users, many=True)
+            serializer = UserSerializer(no_team_users, many=True)
             response_data.append({
                 "team": "No Team Assigned",
                 "members": serializer.data
@@ -115,17 +115,20 @@ class Admin_UsersView(APIView):
         return Response(response_data)
     
     def post(self, request):
-        serializer = UsersSerializer(data=request.data)
+        alternative_email_id = request.data.get('alternative_email_id')
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+          
+            account_credentials.delay(alternative_email_id)
+        
             return Response(
                 {"message": "User added successfully", "user": serializer.data},
-                status=status.HTTP_201_CREATED
-            )
+                status=status.HTTP_201_CREATED)
+            
         return Response(
             {"errors": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+            status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request):
         email = request.data.get('email_id')
