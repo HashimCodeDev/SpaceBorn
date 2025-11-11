@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Rocket, Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
@@ -28,7 +29,14 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
-            <Image src="/images/logo.png" alt="Spaceborn Logo" width={40} height={40} />
+            <Image
+              src="/images/logo.png"
+              alt="Spaceborn Logo"
+              width={40}
+              height={40}
+              style={{ height: 'auto', width: 'auto' }}
+              className="w-10 h-auto"
+            />
             <span className="text-2xl font-bold text-white tracking-widest text-glow">SPACEBORN</span>
           </div>
 
@@ -59,23 +67,33 @@ export default function Navigation() {
           </div>
         </div>
 
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-black/90 backdrop-blur-md rounded-lg mt-2 p-4">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="block py-2 text-white/80 hover:text-white transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+        {/* Animated Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <div className="md:hidden bg-black/90 backdrop-blur-md rounded-lg mt-2 p-4">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
               >
-                {item.name}
-              </a>
-            ))}
-            <Button className="w-full mt-4 bg-white text-black">
-              <span className="uppercase tracking-wider">Get Started</span>
-            </Button>
-          </div>
-        )}
+                {navItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="block py-2 text-white/80 hover:text-white transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+                <Button className="w-full mt-4 bg-white text-black">
+                  <span className="uppercase tracking-wider">Get Started</span>
+                </Button>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   )

@@ -2,6 +2,7 @@
 
 import { Rocket, Brain, Globe, Zap } from 'lucide-react'
 import Image from 'next/image'
+import SpotlightCard from './SpotlightCard'
 
 export default function AboutSection() {
   const features = [
@@ -51,15 +52,21 @@ export default function AboutSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {features.map((feature) => (
-            <div key={feature.title} className="hologram rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group">
+            <SpotlightCard
+              key={feature.title}
+              className="rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group"
+              spotlightColor="rgba(180, 180, 180, 0.15)"
+            >
               <div className="mb-4">
-                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center transition-transform">
                   <feature.icon className="h-6 w-6 text-black" />
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">{feature.title}</h3>
+              <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">
+                {feature.title}
+              </h3>
               <p className="text-white/70">{feature.description}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 

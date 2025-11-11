@@ -16,7 +16,7 @@ export default function FounderSection() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          <div className="relative order-2 lg:order-1">
+          <div className="relative sm:order-2 lg:order-1">
             <div className="aspect-square hologram rounded-3xl overflow-hidden relative">
               <Image
                 src="/team/adarsh.jpeg"
