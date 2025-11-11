@@ -77,7 +77,7 @@ export default function HeroSection() {
 
         <div className="h-100 relative top-5 lg:h-[600px]">
           <ModelViewer
-            url="/low_poly_quadcopter_drone.glb"
+            url="/models/low_poly_quadcopter_drone.glb"
             width={600}
             height={500}
             autoRotate
