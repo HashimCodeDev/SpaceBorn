@@ -66,26 +66,67 @@ class LogoutView(APIView):
 #Admin functionalities
 
 class Admin_DashboardView(APIView):
-    permission_classes = [IsAdminOrCore]  # Protect with JWT
+    permission_classes = [IsAdminOrCore,IsEmployee]  # Protect with JWT
 
     def get(self, request):
         # Optionally, ensure only admins can access
-        if request.user.role != 'admin':
-            return Response({"error": "Access Denied"}, status=403)
+        if request.user.role == 'admin':
+            # return Response({"error": "Access Denied"}, status=403)
 
         # Example dashboard data
-        total_users = User.objects.count()
-        total_teams = Team.objects.count()
-        total_tasks = Task.objects.count()
-        completed_tasks = Task.objects.filter(status='Completed').count()
+            total_users = User.objects.count()
+            total_teams = Team.objects.count()
+            total_tasks = Task.objects.count()
+            completed_tasks = Task.objects.filter(status='Completed').count()
+            revenue = Revenue.objects.all()
 
-        return Response({
-            "admin": request.user.full_name,
-            "total_users": total_users,
-            "total_teams": total_teams,
-            "total_tasks": total_tasks,
-            "completed_tasks": completed_tasks
-        })
+            total_revenue=0
+            
+            for i in revenue:
+                total_revenue+=i.total
+                
+            return Response({
+                "admin": request.user.full_name,
+                "total_users": total_users,
+                "total_teams": total_teams,
+                "total_tasks": total_tasks,
+                "completed_tasks": completed_tasks,
+                "total_revenue": total_revenue
+            })
+        
+        elif request.user.role == 'core':
+            
+            total_users = User.objects.count()
+            total_teams = Team.objects.count()
+            total_tasks = Task.objects.count()
+            completed_tasks = Task.objects.filter(status='Completed').count()
+
+            return Response({
+                "admin": request.user.full_name,
+                "total_users": total_users,
+                "total_teams": total_teams,
+                "total_tasks": total_tasks,
+                "completed_tasks": completed_tasks
+            }) 
+            
+        else:
+            
+            total_users = User.objects.count()
+            total_teams = Team.objects.count()
+            total_tasks = Task.objects.count()
+            completed_tasks = Task.objects.filter(status='Completed').count()
+
+            return Response({
+                "admin": request.user.full_name,
+                "total_users": total_users,
+                "total_teams": total_teams,
+                "total_tasks": total_tasks,
+                "completed_tasks": completed_tasks
+            })
+            
+        
+            
+        
         
 class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]

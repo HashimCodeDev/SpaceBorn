@@ -1,19 +1,25 @@
-
+import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b4##69kgv6iaw_%s53s!g0ale*lhil4oq2m%=c#4ot+=@tgtjp'
+# Load environment variables from .env
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+# Read the secret key from environment
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Add your deployment domains here
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'space-born.vercel.app']  # Add your deployment domains here
 
 # Application definition
 
@@ -42,7 +48,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://space-born.vercel.app/',
+    'https://space-born.vercel.app',
     'https://www.spaceborn.in',
     "http://localhost:3000",  # Next.js dev server
     # Add your production frontend URL here

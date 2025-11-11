@@ -14,11 +14,12 @@ def account_credentials(email_id):
         body = (f"<p>Hi <b>{user.full_name}</b>,</p>"
             f"<p>Your account has been successfully created on <b>Spaceborn</b>!</p>"
             f"<p><b>Login Details:</b><br>"
-            f>Email ID: {user.email_id}<br>"
-            f>Password: {user.password}</p>"
+            f"Email ID: {user.email_id}<br>"
+            f"Password: {user.password}</p>"
             f"<p>Please keep your credentials safe and do not share them with anyone.</p>"
             f"<br><p>Best Regards,<br>Spaceborn Admin Team</p>"
-        )
+            )
+        
 
         # ✅ Use your mail.py function
         send_email(
@@ -46,8 +47,8 @@ def meeting_remainder(email_id):
         body = (f"<p>Hi <b>{user.full_name}</b>,</p>"
             f"<p>Your account has been successfully created on <b>Spaceborn</b>!</p>"
             f"<p><b>Login Details:</b><br>"
-            f>Email ID: {user.email_id}<br>"
-            f>Password: {user.password}</p>"
+            f"Email ID: {user.email_id}<br>"
+            f"Password: {user.password}</p>"
             f"<p>Please keep your credentials safe and do not share them with anyone.</p>"
             f"<br><p>Best Regards,<br>Spaceborn Admin Team</p>"
         )
