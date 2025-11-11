@@ -94,6 +94,11 @@
   pointer-events: none;
 }
 
+.pc-card,
+.pc-shine {
+  animation: none !important;
+}
+
 .pc-inside {
   inset: 0;
   position: absolute;
