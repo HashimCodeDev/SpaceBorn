@@ -25,6 +25,8 @@ class UserSerializer(serializers.ModelSerializer):
             'joined_on',
             'team',
             'tasks_assigned',
+            'assigned_meetings',
+            'joined_meetings'
         ]
         extra_kwargs = {
             'password': {'write_only': True}  # don't expose passwords
@@ -92,4 +94,4 @@ class MeetingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meeting
-        fields = ['id', 'title', 'start_time', 'date', 'link', 'team', 'members']
+        fields = ['id', 'title', 'start_time', 'date', 'link', 'team', 'members', 'additional_members']

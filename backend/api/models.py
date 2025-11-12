@@ -12,7 +12,8 @@ class Team(models.Model):
     members = models.ManyToManyField(
         'User',                # reference to the User model
         related_name='teams',  # allows user.teams.all()
-        blank=True
+        blank=True,
+        null=True
     )
 
     def __str__(self):
@@ -47,6 +48,10 @@ class User(models.Model):
     # photo = models.ImageField(upload_to='profiles/', null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='employee')
     joined_on = models.DateField()
+    
+    assigned_meetings = models.IntegerField(default=0)
+    joined_meetings = models.IntegerField(default=0)
+  
 
     # Relationship: User belongs to a team
     # team = models.ForeignKey(
@@ -157,6 +162,13 @@ class Meeting(models.Model):
         User,
         related_name='meetings_attended',
         blank=True                       # allows empty members list initially
+    )
+    
+    additional_members = models.ManyToManyField(
+        User,
+        related_name='meetings_attended',
+        blank=True,
+        null=True# allows empty members list initially
     )
 
     def __str__(self):

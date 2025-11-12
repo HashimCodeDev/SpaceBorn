@@ -130,13 +130,18 @@ class Admin_DashboardView(APIView):
             team = request.data.get('team')
             
             serializer = MeetingSerializer(data=request.data)
-            
+            additional_members = request.data.get('additional_members', [])
             if serializer.is_valid():
                 meeting = serializer.save(team=team)
-                meeting.members.set(team.members.all())
+                all_members = list(team.members.all())
+                extra_users = User.objects.filter(email_id__in=additional_members)
+                meeting.members.set(all_members + list(extra_users))
                 meeting.save()
                 
                 meeting_reminder.delay(meeting.id)
+                for user in meeting.members.all():
+                    user.assigned_meetings = (user.assigned_meetings or 0) + 1
+                    user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -173,6 +178,25 @@ class Admin_DashboardView(APIView):
             {"errors": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST
         )
+        
+    def delete(self, request):
+        meeting_id = request.data.get('id')
+        if not meeting_id:
+            return Response({"error": "Meeting ID is required for deletion."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            meeting = Meeting.objects.get(id=meeting_id)
+        except Meeting.DoesNotExist:
+            return Response({"error": f"Meeting with ID {meeting_id} not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Decrement assigned_meetings count for members
+        for member in meeting.members.all():
+            if member.assigned_meetings and member.assigned_meetings > 0:
+                member.assigned_meetings -= 1
+                member.save()
+
+        meeting.delete()
+        return Response({"message": f"Meeting {meeting_id} deleted successfully."}, status=status.HTTP_200_OK)
             
 
         
