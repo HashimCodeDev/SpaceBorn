@@ -75,7 +75,7 @@ class Admin_DashboardView(APIView):
             
                 
             return Response({
-                "admin": request.user.full_name,
+                "user": request.user.full_name,
                 "total_users": total_users,
                 "total_teams": total_teams,
                 "total_tasks": total_tasks,
@@ -91,7 +91,7 @@ class Admin_DashboardView(APIView):
             completed_tasks = Task.objects.filter(status='Completed').count()
 
             return Response({
-                "admin": request.user.full_name,
+                "user": request.user.full_name,
                 "total_users": total_users,
                 "total_teams": total_teams,
                 "total_tasks": total_tasks,
@@ -106,7 +106,7 @@ class Admin_DashboardView(APIView):
             completed_tasks = Task.objects.filter(status='Completed').count()
 
             return Response({
-                "admin": request.user.full_name,
+                "user": request.user.full_name,
                 "total_users": total_users,
                 "total_teams": total_teams,
                 "total_tasks": total_tasks,
@@ -380,7 +380,7 @@ class MeetingView(APIView):
 
 # -------------------- SEPARATE ENDPOINT FOR ATTENDANCE --------------------
 class MeetingAttendanceView(APIView):
-
+    permission_classes=[IsAdmin]
     def post(self, request):
         """Mark attendance for a user in a meeting."""
         meeting_id = request.data.get('id')
@@ -406,27 +406,25 @@ class Admin_UsersView(APIView):
     permission_classes = [IsAdmin]
 
     def get(self, request):
+        teams = Team.objects.prefetch_related('team_members').all()
         response_data = []
-
-        teams = Team.objects.all()
+        
         for team in teams:
-            users = User.objects.filter(team=team)
+            users = team.team_members.all()  # ✅ ManyToMany relationship
             serializer = UserSerializer(users, many=True)
-            
             response_data.append({
                 "team": team.name,
                 "members": serializer.data
             })
-
-        # Handle users who have no team (optional)
-        no_team_users = User.objects.filter(team__isnull=True)
+        
+        # Users not in any team
+        no_team_users = User.objects.filter(teams__isnull=True)
         if no_team_users.exists():
-            serializer = UserSerializer(no_team_users, many=True)
             response_data.append({
                 "team": "No Team Assigned",
-                "members": serializer.data
+                "members": UserSerializer(no_team_users, many=True).data
             })
-
+        
         return Response(response_data)
     
     def post(self, request):
@@ -524,9 +522,20 @@ class TaskView(APIView):
     def get(self, request): 
         
         tasks = Task.objects.all()
-        serializer = TeamSerializer(tasks, many=True)
+        serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
     
+    # user = request.user
+    
+    # if user.role == 'admin':
+    #     tasks = Task.objects.all()
+    # elif user.role == 'core':
+    #     tasks = Task.objects.filter(project__team__in=user.teams.all())
+    # else:  # employee
+    #     tasks = user.tasks_assigned.all()
+    
+    # serializer = TaskSerializer(tasks, many=True)
+    # return Response(serializer.data)
     def post(self, request):
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -659,7 +668,7 @@ class ProjectsView(APIView):
                 {"message": f"Project {project_id} deleted successfully."},
                 status=status.HTTP_200_OK
             )
-        except Task.DoesNotExist:
+        except Project.DoesNotExist:
             return Response(
                 {"error": f"Project with ID {project_id} not found."},
                 status=status.HTTP_404_NOT_FOUND
