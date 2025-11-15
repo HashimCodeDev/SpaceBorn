@@ -129,7 +129,7 @@ class Task(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Started')
     deadline = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     assigned_to = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
