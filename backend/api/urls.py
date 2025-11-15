@@ -1,4 +1,3 @@
-# from django.contrib import admin
 from django.urls import path
 from api.views import DashboardView, Admin_UsersView, TaskView, ProjectsView, LoginView, LogoutView, MeetingView, MeetingAttendanceView
 from rest_framework_simplejwt.views import (
@@ -7,10 +6,12 @@ from rest_framework_simplejwt.views import (
 )
 from api.views import PasswordResetRequestView, PasswordResetConfirmView
 from rest_framework_simplejwt.views import TokenBlacklistView
-from rest_framework.throttling import AnonRateThrottle
+
+# Import drf-spectacular views
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
-    # path('', UsersView.as_view()),
+    # Your existing URLs
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     
     path('v1/users/', Admin_UsersView.as_view(), name='users'),
@@ -31,6 +32,11 @@ urlpatterns = [
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist')
+    path('token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
     
+    # Swagger URLs
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

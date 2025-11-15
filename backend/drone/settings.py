@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +114,8 @@ REST_FRAMEWORK = {
         'anon': '100/hour',
         'user': '1000/hour',
     },
+     # Add drf-spectacular settings
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 ROOT_URLCONF = 'drone.urls'
@@ -239,4 +242,12 @@ LOGGING = {
         'handlers': ['console', 'file'] if not DEBUG else ['console'],
         'level': 'INFO',
     },
+}
+
+# Add at the end of drone/settings.py
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'SpaceBorn API',
+    'DESCRIPTION': 'API documentation for the SpaceBorn project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
