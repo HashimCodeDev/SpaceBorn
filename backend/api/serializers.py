@@ -31,16 +31,38 @@ class UserSerializer(serializers.ModelSerializer):
             'joined_meetings'
         ]
         extra_kwargs = {
-            'password': {'write_only': True},  # don't expose passwords
+            # 'password': {'write_only': True},  # don't expose passwords
              'email_id': {'required': True}
         }
+        
+        def create(self, validated_data):
+            password = validated_data.pop('password')
+            user = User.objects.create_user(**validated_data)
+            user.set_password(password)
+            user.save()
+            return user
+
+    # ✅ Update logic (hash password if provided)
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+
+        if password:
+            instance.set_password(password)
+
+        return super().update(instance, validated_data)
 
 
 # 3️⃣ --- Task Serializer ---
 class TaskSerializer(serializers.ModelSerializer):
-    # Nested representation for related fields
-    assigned_to = serializers.StringRelatedField(read_only=True)
-    project = serializers.StringRelatedField(read_only=True)
+    assigned_to_detail = serializers.StringRelatedField(source='assigned_to', read_only=True)
+    project_detail = serializers.StringRelatedField(source='project', read_only=True)
+
+    assigned_to = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        required=False,
+        allow_null=True
+    )
+    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
 
     class Meta:
         model = Task
@@ -51,9 +73,20 @@ class TaskSerializer(serializers.ModelSerializer):
             'deadline',
             'created_at',
             'updated_at',
+
+            # write fields
             'assigned_to',
-            'project'
+            'project',
+
+            # read-only detail fields
+            'assigned_to_detail',
+            'project_detail',
         ]
+        read_only_fields = [
+            'assigned_to_detail',
+            'project_detail',
+        ]
+
 
 # 4️⃣ --- Project Serializer (Updated for combined model) ---
 class ProjectSerializer(serializers.ModelSerializer):
@@ -68,7 +101,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id', 'name', 'description', 'status', 'created_at',
+            'id', 'name', 'description', 'status',
             'team', 'team_detail',           # ✅ Both ID and name
             'members', 'members_detail',     # ✅ Both IDs and names
             'tasks', 'created_at', 'updated_at'
@@ -93,13 +126,36 @@ class RevenueSerializer(serializers.ModelSerializer):
 
 
 class MeetingSerializer(serializers.ModelSerializer):
-    team = serializers.StringRelatedField()  # no many=True
-    members = serializers.StringRelatedField(many=True, read_only=True)
-    additional_members = serializers.StringRelatedField(many=True, read_only=True)
+    team_detail = serializers.StringRelatedField(source='team', read_only=True)
+    members_detail = serializers.StringRelatedField(source='members', many=True, read_only=True)
+    additional_members_detail = serializers.StringRelatedField(source='additional_members', many=True, read_only=True)
+    
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all())
+    members = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
+    additional_members = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
 
     class Meta:
         model = Meeting
         fields = [
-            'id', 'title', 'start_time', 'date', 'link', 'created_at',
-            'team', 'members', 'additional_members'
+            'id',
+            'title',
+            'start_time',
+            'date',
+            'link',
+            'created_at',
+
+            # Write fields
+            'team',
+            'members',
+            'additional_members',
+
+            # Read-only detail fields
+            'team_detail',
+            'members_detail',
+            'additional_members_detail',
+        ]
+        read_only_fields = [
+            'team_detail',
+            'members_detail',
+            'additional_members_detail',
         ]

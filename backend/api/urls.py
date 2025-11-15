@@ -7,20 +7,21 @@ from rest_framework_simplejwt.views import (
 )
 from api.views import PasswordResetRequestView, PasswordResetConfirmView
 from rest_framework_simplejwt.views import TokenBlacklistView
+from rest_framework.throttling import AnonRateThrottle
 
 urlpatterns = [
     # path('', UsersView.as_view()),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     
-    path('admin/users/', Admin_UsersView.as_view(), name='admin_users'),
-    path('admin_core/tasks/', TaskView.as_view(), name='admin_core_tasks'),
-    path('admin_core/projects/', ProjectsView.as_view(), name='admin_core_projects'),
+    path('v1/users/', Admin_UsersView.as_view(), name='users'),
+    path('v1/tasks/', TaskView.as_view(), name='tasks'),
+    path('v1/projects/', ProjectsView.as_view(), name='projects'),
     
     path('logout/', LogoutView.as_view(), name='logout'),
     path('login/', LoginView.as_view(), name='login'),
     
-    path('meetings/', MeetingView.as_view(), name='meeting'),
-    path('meeting/attendance', MeetingAttendanceView.as_view(), name='meeting_attendance'),
+    path('meetings/<int:pk>/', MeetingView.as_view(), name='meeting'),
+    path('meeting/attendance/', MeetingAttendanceView.as_view(), name='meeting_attendance'),
     path('auth/password-reset/', PasswordResetRequestView.as_view(), name='password-reset'),
     path(
         'auth/password-reset-confirm/<uidb64>/<token>/',
@@ -28,8 +29,8 @@ urlpatterns = [
         name='password-reset-confirm'
     ),
     
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist')
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist')
     
 ]

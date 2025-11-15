@@ -23,7 +23,8 @@ def account_credentials(self, email):
         
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
-        reset_link = f"https://spaceborn.in/reset-password/{uid}/{token}/"
+        from django.contrib.sites.shortcuts import get_current_site
+        reset_link = f"{settings.SITE_URL}/reset-password/{uid}/{token}/"
         
         subject = "Welcome to Spaceborn - Set Your Password"
         body_html = f"""
@@ -41,10 +42,13 @@ def account_credentials(self, email):
             subject=subject,
             body="Welcome to Spaceborn! Set your password to get started.",
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[user.email],  # ✅ Send to primary email
+            to=[user.email_id],  # ✅ Send to primary email
         )
         msg.attach_alternative(body_html, "text/html")
-        msg.send()
+        result = msg.send()
+        if result == 0:
+            raise Exception("Email failed to send")
+        return f"Welcome email sent to {user.email_id}"
         
         return f"Welcome email sent to {user.email}"
         
@@ -65,10 +69,10 @@ def meeting_reminder(meeting_id):
         if not team:
             return "Meeting has no associated team."
 
-        members = team.team_members.all()  # ✅ updated field name if needed
-        if not members.exists():
+        if not team.team_members.exists():
             return "No members found in this team."
-
+        members = team.team_members.all()
+        
         subject = f"📅 Meeting Reminder: {meeting.title}"
         messages = []
 
@@ -85,9 +89,15 @@ def meeting_reminder(meeting_id):
             messages.append((subject, body, settings.DEFAULT_FROM_EMAIL, [member.email_id]))
 
         # ✅ One SMTP connection for all emails
-        send_mass_mail(messages, fail_silently=False)
+        try:
+            send_mass_mail(messages, fail_silently=False)
+            return f"✅ Sent {len(messages)} reminders for team {team.name}."
+        except Exception as e:
+            logger.error(f"Failed to send meeting reminders: {e}")
+            raise self.retry(exc=e, countdown=2 ** self.request.retries * 60)
 
         return f"✅ Sent {len(messages)} reminders for team {team.name}."
 
     except Meeting.DoesNotExist:
-        return f"❌ Meeting not found for ID: {meeting_id}"
+        logger.error(f"Meeting not found: {meeting_id}")
+        return "Meeting not found"

@@ -20,6 +20,7 @@ from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from rest_framework.throttling import AnonRateThrottle
 
 # class UsersView(generics.ListAPIView):
 #     permission_classes = [IsAuthenticated]
@@ -28,16 +29,21 @@ from django.utils.http import urlsafe_base64_decode
 #     serializer_class = UserSerializer
 
 class LoginView(APIView):
+    throttle_classes = [AnonRateThrottle]
+     
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
 
+        # Always check password even if user doesn't exist
+        user = None
         try:
             user = User.objects.get(email_id=email)
         except User.DoesNotExist:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            pass
 
-        if not user.check_password(password):
+        # Use constant-time comparison
+        if user is None or not user.check_password(password):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
         # ✅ Create JWT tokens
@@ -70,7 +76,7 @@ class PasswordResetRequestView(APIView):
             return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email_id=email)
         except User.DoesNotExist:
             # Avoid revealing whether email exists in DB
             return Response({"message": "If an account with that email exists, a reset link has been sent."})
@@ -78,7 +84,7 @@ class PasswordResetRequestView(APIView):
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        reset_url = f"http://your-frontend-domain/auth/password-reset-confirm/{uidb64}/{token}/"
+        reset_url = f"settings.FRONTEND_URL/{uidb64}/{token}/"
 
         # Send email with reset link (customize as needed)
         send_mail(
