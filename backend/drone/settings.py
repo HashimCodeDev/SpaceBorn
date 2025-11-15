@@ -102,8 +102,16 @@ WSGI_APPLICATION = 'drone.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',                          # ✅ MongoDB engine
+        'NAME': os.getenv('MONGO_DB_NAME', 'drone_db'),
+        'CLIENT': {
+            'host': os.getenv('MONGO_HOST', 'localhost'),
+            'port': int(os.getenv('MONGO_PORT', 27017)),
+            'username': os.getenv('MONGO_USER', ''),
+            'password': os.getenv('MONGO_PASSWORD', ''),
+            'authSource': 'admin',                   # ✅ Auth database
+            'authMechanism': 'SCRAM-SHA-1'
+        }
     }
 }
 

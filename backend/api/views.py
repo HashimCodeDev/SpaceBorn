@@ -438,7 +438,7 @@ class Admin_UsersView(APIView):
         if team_id:
             try:
                 team = Team.objects.get(id=team_id)
-                user.team = team
+                user.teams.add(team)
             except Team.DoesNotExist:
                 return Response(
                     {"error": f"Team with ID {team_id} not found."},

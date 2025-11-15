@@ -60,6 +60,19 @@ class User(AbstractUser):
     
     assigned_meetings = models.IntegerField(default=0)
     joined_meetings = models.IntegerField(default=0)
+    
+    groups = models.ManyToManyField(
+    'auth.Group',
+    related_name='api_users_groups',
+    blank=True
+)
+
+    user_permissions = models.ManyToManyField(
+    'auth.Permission',
+    related_name='api_users_permissions',
+    blank=True
+)
+
   
 
     def __str__(self):
@@ -122,7 +135,7 @@ class Task(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Started')
     deadline = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    updated_at = models.DateTimeField(auto_now_add=True)
     assigned_to = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,

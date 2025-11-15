@@ -32,7 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             'password': {'write_only': True},  # don't expose passwords
-             'email': {'required': True}
+             'email_id': {'required': True}
         }
 
 
@@ -50,6 +50,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'status',
             'deadline',
             'created_at',
+            'updated_at',
             'assigned_to',
             'project'
         ]
@@ -67,7 +68,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id', 'name', 'description', 'status', 'created_at'
+            'id', 'name', 'description', 'status', 'created_at',
             'team', 'team_detail',           # ✅ Both ID and name
             'members', 'members_detail',     # ✅ Both IDs and names
             'tasks', 'created_at', 'updated_at'
@@ -76,8 +77,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 # 1️⃣ --- Team Serializer ---
 class TeamSerializer(serializers.ModelSerializer):
-    # Show user names and projects under each team
-    members = serializers.StringRelatedField(many=True, read_only=True)
+    team_members = serializers.StringRelatedField(many=True, read_only=True)
     projects = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
@@ -93,9 +93,13 @@ class RevenueSerializer(serializers.ModelSerializer):
 
 
 class MeetingSerializer(serializers.ModelSerializer):
-    team = serializers.StringRelatedField(many=True)       # shows team name instead of id
-    members = serializers.StringRelatedField(many=True)  # shows member names instead of ids
+    team = serializers.StringRelatedField()  # no many=True
+    members = serializers.StringRelatedField(many=True, read_only=True)
+    additional_members = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Meeting
-        fields = ['id', 'title', 'start_time', 'date', 'link', 'created_at', 'team', 'members', 'additional_members']
+        fields = [
+            'id', 'title', 'start_time', 'date', 'link', 'created_at',
+            'team', 'members', 'additional_members'
+        ]
