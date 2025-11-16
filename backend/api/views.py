@@ -26,26 +26,34 @@ from api.task import *
 # -------------------- LOGIN / LOGOUT --------------------
 
 @extend_schema_view(
-    post=extend_schema(tags=['Authentication'])
+    post=extend_schema(
+        tags=['Authentication'],
+        request=AuthenticationSerializer,  # This shows payload in Swagger
+    )
 )
 class LoginView(APIView):
+    authentication_classes = []
+    permission_classes = []
     throttle_classes = [AnonRateThrottle]
 
     def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        # Validate input data using the serializer
+        serializer = AuthenticationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
 
-        # Always check password even if user doesn't exist
-        user = None
+        # Authenticate user
         try:
-            user = User.objects.get(email_id=email)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
-            pass
+            print("User not found:", email)
+            return Response({"error": "User not found"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user is None or not user.check_password(password):
+        if not user.check_password(password):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        # JWT tokens
+        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
@@ -56,12 +64,12 @@ class LoginView(APIView):
             "user_role": user.role
         }, status=status.HTTP_200_OK)
 
-        # Optional: set cookies
+        # Set HTTP-only cookies if desired
         response.set_cookie("access_token", access_token, httponly=True, secure=True)
         response.set_cookie("refresh_token", str(refresh), httponly=True, secure=True)
 
         return response
-
+    
 @extend_schema_view(
     post=extend_schema(tags=['Authentication'])
 )
