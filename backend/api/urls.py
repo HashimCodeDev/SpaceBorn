@@ -30,9 +30,9 @@ urlpatterns = [
         name='password-reset-confirm'
     ),
     
-    path('v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('v1/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
+    path('v1/auth/verify/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('v1/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('v1/auth/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
     
     # Swagger URLs
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
