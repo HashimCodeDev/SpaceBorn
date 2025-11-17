@@ -17,7 +17,7 @@ export default function TeamSection() {
     { name: 'Gourav Thakur', role: 'Chief Operating Officer', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.png' },
     { name: 'Soubhagya Nayak', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Hashim Mohamed', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
-    { name: 'Ayush Bhramar', role: 'Chief Hardware Officer', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
+    { name: 'Ayush Bhramar', role: 'Chief Hardware & Embedded Officer', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
     { name: 'Vipul Bhamare', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
 
   ]
