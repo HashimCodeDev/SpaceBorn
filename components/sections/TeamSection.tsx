@@ -64,40 +64,6 @@ export default function TeamSection() {
             </div>
           ))}
         </div>
-
-        {/* Join Team Section (Optional) */}
-        <div className="mt-32 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 className="text-4xl font-bold text-white mb-8">
-              Join our team, check open positions
-            </h3>
-            <button className="border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 mb-8">
-              APPLY
-            </button>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>AI/ML Engineer</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>Embedded Systems Engineer</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>Drone Pilot</span>
-              </div>
-            </div>
-          </div>
-          <div className="relative aspect-video rounded-lg overflow-hidden">
-            <Image
-              src="/team/team-photo.jpg"
-              alt="Spaceborn Team"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
       </div>
     </section>
   )
