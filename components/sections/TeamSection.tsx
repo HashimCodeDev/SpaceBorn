@@ -2,7 +2,6 @@
 
 import { Linkedin } from 'lucide-react'
 import Image from 'next/image'
-import ProfileCard from '@/components/cards/ProfileCard/ProfileCard'
 
 interface TeamMember {
   name: string
@@ -13,65 +12,91 @@ interface TeamMember {
 
 export default function TeamSection() {
   const teamMembers: TeamMember[] = [
+    { name: "Adarsh Kumar", role: "Chief Executive Officer", linkedin: "https://www.linkedin.com/in/adarsh-kumar-ab8111377/", image: "/team/adarsh.png" },
     { name: 'Gourav Thakur', role: 'Chief Operating Officer', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.png' },
     { name: 'Soubhagya Nayak', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Hashim Mohamed', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
     { name: 'Ayush Bhramar', role: 'Chief Hardware & Embedded Officer', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
     { name: 'Vipul Bhamare', role: 'Chief Robotics & Simulation Officer', linkedin: 'https://www.linkedin.com/in/vipul-bhamare-54579a384/', image: '/team/vipul.png' },
-
-  ]
-
-  const innerGradient = `linear-gradient(
-  145deg,
-  rgba(10, 10, 10, 0.95) 0%,
-  rgba(25, 25, 25, 0.9) 40%,
-  rgba(35, 35, 35, 0.85) 100%
-)`;
+  ];
 
   return (
-    <section id="team" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-4 text-glow">
-            <span className="text-white tracking-wider">CORE TEAM</span>
+    <section id="team" className="py-20 bg-[#0a0a0a]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-16">
+          <h2 className="text-5xl lg:text-6xl font-bold text-white mb-4">
+            Our Team
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Meet the brilliant minds driving innovation at Spaceborn
-          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 place-items-center">
+        {/* Team Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
           {teamMembers.map((member) => (
             <div
               key={member.name}
-              className="w-full flex justify-center"
+              className="group cursor-pointer"
+              onClick={() => window.open(member.linkedin, '_blank', 'noopener,noreferrer')}
             >
-              <ProfileCard
-                key={member.name}
-                className='group transition-all duration-300 hover:scale-[1.02]'
-                name={member.name}
-                title={member.role}
-                handle={member.name.toLowerCase().replace(/\s+/g, '')}
-                status=""
-                contactText="Contact Me"
-                avatarUrl={member.image}
-                miniAvatarUrl={member.image}
-                innerGradient={innerGradient}
-                behindGlowEnabled={false}
-                behindGlowColor="rgba(255, 255, 255, 0.08)"
-                behindGlowSize="5%"
-                enableTilt={true}
-                enableMobileTilt={false}
-                showUserInfo={true}
-                grainUrl='/images/grain.webp'
-                onContactClick={() => {
-                  window.open(member.linkedin, '_blank', 'noopener,noreferrer');
-                }}
-              />
+              {/* Image Container */}
+              <div className="relative aspect-3/4 mb-4 overflow-hidden rounded-lg bg-zinc-900">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                />
+                {/* LinkedIn Overlay on Hover
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <Linkedin className="w-8 h-8 text-white" />
+                </div> */}
+              </div>
+
+              {/* Member Info */}
+              <div>
+                <h3 className="text-white text-lg font-semibold mb-1">
+                  {member.name}
+                </h3>
+                <p className="text-gray-400 text-sm uppercase tracking-wide">
+                  {member.role}
+                </p>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Join Team Section (Optional) */}
+        <div className="mt-32 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 className="text-4xl font-bold text-white mb-8">
+              Join our team, check open positions
+            </h3>
+            <button className="border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 mb-8">
+              APPLY
+            </button>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-white">
+                <span className="text-2xl">→</span>
+                <span>AI/ML Engineer</span>
+              </div>
+              <div className="flex items-center gap-2 text-white">
+                <span className="text-2xl">→</span>
+                <span>Embedded Systems Engineer</span>
+              </div>
+              <div className="flex items-center gap-2 text-white">
+                <span className="text-2xl">→</span>
+                <span>Drone Pilot</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative aspect-video rounded-lg overflow-hidden">
+            <Image
+              src="/team/team-photo.jpg"
+              alt="Spaceborn Team"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
