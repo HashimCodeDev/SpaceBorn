@@ -6,7 +6,6 @@ import { useScroll, cancelFrame, frame } from 'motion/react'
 import { ReactLenis } from 'lenis/react'
 import type { LenisRef } from 'lenis/react'
 import ParallaxCardEffect from '@/components/effects/ParallaxCardEffect'
-import { cn } from '@/lib/utils'
 
 export default function AboutSection() {
   const lenisRef = useRef<LenisRef>(null)
@@ -70,7 +69,7 @@ export default function AboutSection() {
               <item.icon className="h-8 w-8 md:h-10 md:w-10 text-white" />
             </div>
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+          <h3 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider bg-linear-to-r from-white via-gray-200 to-gray-400 bg-clip-text">
             {item.title}
           </h3>
           <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
@@ -84,9 +83,9 @@ export default function AboutSection() {
   return (
     <>
       <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
-      <section id="about" className="relative overflow-hidden bg-black">
+      <section id="about" className="relative overflow-hidden" style={{ backgroundColor: '#040405' }}>
         {/* Vignette effect matching hero */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-60 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#040405_100%)] opacity-60 pointer-events-none" />
 
         <div ref={containerRef} className="relative">
           {/* Spacer at top */}

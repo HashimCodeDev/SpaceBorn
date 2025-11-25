@@ -9,7 +9,7 @@ export default function HeroSection() {
       id="home"
       className="relative min-h-screen w-full"
     >
-      <StarsBackground className="flex items-center justify-center">
+      <StarsBackground className="flex min-h-screen items-center justify-center">
         {/* Vignette effect */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-60 pointer-events-none" />
 
