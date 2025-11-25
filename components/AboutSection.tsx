@@ -1,15 +1,39 @@
 'use client'
 
+import { useRef, useEffect } from 'react'
 import { Rocket, Brain, Globe, Zap } from 'lucide-react'
-import Image from 'next/image'
-import SpotlightCard from './SpotlightCard'
+import { useScroll, cancelFrame, frame } from 'motion/react'
+import { ReactLenis } from 'lenis/react'
+import type { LenisRef } from 'lenis/react'
+import ParallaxCardEffect from '@/components/effects/ParallaxCardEffect'
+import { cn } from '@/lib/utils'
 
 export default function AboutSection() {
+  const lenisRef = useRef<LenisRef>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  })
+
+  useEffect(() => {
+    function update(data: { timestamp: number }) {
+      const time = data.timestamp
+      lenisRef.current?.lenis?.raf(time)
+    }
+
+    frame.update(update, true)
+
+    return () => cancelFrame(update)
+  }, [])
+
   const features = [
     {
       icon: Brain,
       title: 'Intelligent Security',
-      description: 'Advanced AI algorithms enable real-time threat detection and autonomous security responses.',
+      description:
+        'Advanced AI algorithms enable real-time threat detection and autonomous security responses.',
     },
     {
       icon: Rocket,
@@ -19,7 +43,8 @@ export default function AboutSection() {
     {
       icon: Globe,
       title: 'Global Protection',
-      description: 'Comprehensive security solutions for facilities, borders, and critical infrastructure worldwide.',
+      description:
+        'Comprehensive security solutions for facilities, borders, and critical infrastructure worldwide.',
     },
     {
       icon: Zap,
@@ -28,90 +53,56 @@ export default function AboutSection() {
     },
   ]
 
-  const stats = [
-    { number: '1000+', label: 'Sites Protected' },
-    { number: '99.9%', label: 'Threat Detection Rate' },
-    { number: '24/7', label: 'Security Coverage' },
-  ]
+  const ParallaxFeatureCard = ({ item, id }: { item: typeof features[0]; id: number }) => {
+    const targetScale = 1 - (features.length - id) * 0.05
 
-  return (
-    <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-gray-900/20 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-glow">
-            <span className="text-white tracking-wider">SECURITY FIRST</span>
-          </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            At Spaceborn, we're not just building drones—we're crafting the future of autonomous security.
-            Our mission is to protect what matters most, creating intelligent security systems
-            that provide unmatched surveillance and threat response capabilities.
+    return (
+      <ParallaxCardEffect
+        id={id}
+        progress={scrollYProgress}
+        range={[id * 0.25, 1]}
+        targetScale={targetScale}
+        className="relative flex flex-col items-center justify-center rounded-3xl border border-white/10 backdrop-blur-xl shadow-2xl bg-white/5"
+      >
+        <div className="space-y-6 text-center px-8 py-12 md:px-16 md:py-16">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20 transition-transform duration-300 hover:scale-110">
+              <item.icon className="h-8 w-8 md:h-10 md:w-10 text-white" />
+            </div>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            {item.title}
+          </h3>
+          <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+            {item.description}
           </p>
         </div>
+      </ParallaxCardEffect>
+    )
+  }
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {features.map((feature) => (
-            <SpotlightCard
-              key={feature.title}
-              className="rounded-2xl p-6 hover:border-white/50 transition-all duration-300 group"
-              spotlightColor="rgba(180, 180, 180, 0.15)"
-            >
-              <div className="mb-4">
-                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center transition-transform">
-                  <feature.icon className="h-6 w-6 text-black" />
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3 uppercase tracking-wide">
-                {feature.title}
-              </h3>
-              <p className="text-white/70">{feature.description}</p>
-            </SpotlightCard>
-          ))}
-        </div>
+  return (
+    <>
+      <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
+      <section id="about" className="relative overflow-hidden bg-black">
+        {/* Vignette effect matching hero */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-60 pointer-events-none" />
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide text-glow">
-              Our Vision for Security
-            </h3>
-            <p className="text-white/80 mb-6">
-              We envision a future where autonomous security drones seamlessly integrate with existing security infrastructure,
-              providing comprehensive protection for facilities, borders, events, and critical assets
-              with unprecedented precision and reliability.
-            </p>
-            <p className="text-white/80 mb-8">
-              Every Spaceborn security drone is equipped with advanced AI, enabling real-time threat assessment
-              and autonomous response capabilities. Our technology doesn't just monitor—it analyzes,
-              predicts, and responds intelligently to security challenges.
-            </p>
+        <div ref={containerRef} className="relative">
+          {/* Spacer at top */}
+          <div className="h-screen" />
 
-            <div className="grid grid-cols-3 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-2xl font-bold text-white">{stat.number}</div>
-                  <div className="text-sm text-white/60">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+          {/* Parallax feature cards - they will stack */}
+          <div className="mx-auto max-w-4xl px-4">
+            {features.map((feature, i) => (
+              <ParallaxFeatureCard item={feature} key={i} id={i} />
+            ))}
           </div>
 
-          <div className="relative">
-            <div className="aspect-square hologram rounded-3xl flex items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 cyber-grid opacity-20" />
-              <Image
-                src="/images/drone.png"
-                alt="Security Drone"
-                width={600}
-                height={600}
-                className="relative z-10 object-fit"
-              />
-            </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full animate-spin-slow" />
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gray-500/20 rounded-full animate-pulse" />
-          </div>
+          {/* Spacer at bottom */}
+          <div className="h-screen" />
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
