@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useScroll, cancelFrame, frame } from "motion/react";
 import { ReactLenis } from "lenis/react";
 import type { LenisRef } from "lenis/react";
