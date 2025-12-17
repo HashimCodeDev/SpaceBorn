@@ -13,7 +13,6 @@ interface TeamMember {
 export default function TeamSection() {
   const teamMembers: TeamMember[] = [
     { name: "Adarsh Kumar (Founder)", role: "Chief Executive Officer", linkedin: "https://www.linkedin.com/in/adarsh-kumar-ab8111377/", image: "/team/adarsh.png" },
-    { name: 'Gourav Thakur (Co-Founder)', role: 'Chief Operating Officer', linkedin: 'https://www.linkedin.com/in/gourav-thakur-77a682389/', image: '/team/gourav.png' },
     { name: 'Ayush Bhramar (Co-Founder)', role: 'Chief Hardware & Embedded Officer', linkedin: 'https://www.linkedin.com/in/ayush-bhramar-a75944390/', image: '/team/ayush.png' },
     { name: 'Soubhagya Nayak', role: 'Chief Technology Officer', linkedin: 'https://www.linkedin.com/in/soubhagya-nayak-27b9b72a7/', image: '/team/soubhagya.png' },
     { name: 'Hashim Mohamed', role: 'Chief System Architect', linkedin: 'https://www.linkedin.com/in/hashimmohamedta/', image: '/team/hashim.png' },
@@ -63,40 +62,6 @@ export default function TeamSection() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Join Team Section (Optional) */}
-        <div className="mt-32 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 className="text-4xl font-bold text-white mb-8">
-              Join our team, check open positions
-            </h3>
-            <button className="border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 mb-8">
-              APPLY
-            </button>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>AI/ML Engineer</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>Embedded Systems Engineer</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">→</span>
-                <span>Drone Pilot</span>
-              </div>
-            </div>
-          </div>
-          <div className="relative aspect-video rounded-lg overflow-hidden">
-            <Image
-              src="/team/team-photo.jpg"
-              alt="Spaceborn Team"
-              fill
-              className="object-cover"
-            />
-          </div>
         </div>
       </div>
     </section>
