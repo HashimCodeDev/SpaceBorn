@@ -70,7 +70,7 @@ export default function Navigation() {
               }
               className="cursor-default bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-full px-6 py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/10"
             >
-              <span className="uppercase tracking-wider text-sm font-semibold">
+              <span className="uppercase tracking-wider text-sm  font-semibold">
                 Download
               </span>
             </Button>
